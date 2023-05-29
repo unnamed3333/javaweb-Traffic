@@ -12,5 +12,5 @@ public interface CoreDao<K, B> {
 
 	B selectByKey(K key);
 
-	List<B> selectAll();
+
 }

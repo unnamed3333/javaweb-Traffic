@@ -18,13 +18,13 @@ public class MemberDaoImpl implements MemberDao{
 	
 	@Override
 	public int insert(Member member) {
-		final String SQL = "insert into Member(USERNAME, PASSWORD, NICKNAME, IDENTITYNUMBER, BIRTHDAY, PHONENO, ADDRESS, EMAIL, AVATAR ) "
+		final String SQL = "insert into Member(NAME, PASSWORD, NICKNAME, IDENTITYNUMBER, BIRTHDAY, PHONENO, ADDRESS, EMAIL, AVATAR ) "
 				+ "values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try (
 			Connection conn = getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(SQL)
 		) {
-			pstmt.setString(1, member.getUsername());
+			pstmt.setString(1, member.getName());
 			pstmt.setString(2, member.getPassword());
 			pstmt.setString(3, member.getNickname());
 			pstmt.setString(4, member.getIdentityNumber());
@@ -41,18 +41,17 @@ public class MemberDaoImpl implements MemberDao{
 	}
 	
 	@Override
-	public Member selectForLogin(String username, String password) {
-		final String SQL = "select * from Member where USERNAME = ? and PASSWORD = ?";
+	public Member selectForLogin(String phoneNo, String password) {
+		final String SQL = "select * from Member where Phoneno = ? and Password = ?";
 		try (
 			Connection conn = getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(SQL)
 		) {
-			pstmt.setString(1, username);
+			pstmt.setString(1, phoneNo);
 			pstmt.setString(2, password);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
 					Member member = new Member();
-
 					member.setId(rs.getInt("ID"));
 					return member;
 				}
@@ -102,7 +101,7 @@ public class MemberDaoImpl implements MemberDao{
 			if(nickname != null && !nickname.isEmpty()) {pstmt.setString(1, nickname);}
 			if(identityNo != null && !identityNo.isEmpty()) {pstmt.setString(1, identityNo);}
 			if(birthday != null && !birthday.isEmpty()) {pstmt.setString(1, birthday);}
-			if(phoneNo != null) {pstmt.setString(1, phoneNo);}
+			if(phoneNo != null && !phoneNo.isEmpty()) {pstmt.setString(1, phoneNo);}
 			if(address != null && !address.isEmpty()) {pstmt.setString(1, address);}
 			if(email != null && !email.isEmpty()) {pstmt.setString(1, email);}
 			if(avatar != null && !avatar.isEmpty()) {pstmt.setString(1, avatar);}
@@ -127,7 +126,7 @@ public class MemberDaoImpl implements MemberDao{
 					Member member = new Member();
 					member.setId(rs.getInt("ID"));
 					member.setAvatar(rs.getString("Avatar"));;
-					member.setUsername(rs.getString("Username"));
+					member.setName(rs.getString("Name"));
 					member.setPassword(rs.getString("Password"));
 					member.setNickname(rs.getString("Nickname"));
 					member.setIdentityNumber(rs.getString("IdentityNumber"));
@@ -145,31 +144,31 @@ public class MemberDaoImpl implements MemberDao{
 		return null;
 	}
 	
-	@Override
-	public List<Member> selectAll() {
-		final String SQL = "select * from Member";
-		List<Member> resultList = new ArrayList<>();
-		try (
-			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(SQL);
-			ResultSet rs = pstmt.executeQuery()
-		) {
-			while (rs.next()) {
-				Member member = new Member();
-				member.setId(rs.getInt("ID"));
-				member.setUsername(rs.getString("Username"));
-				member.setPassword(rs.getString("Password"));
-//				member.setNickname(rs.getString("NICKNAME"));
-
-
-				resultList.add(member);
-			}
-			return resultList;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	@Override
+//	public List<Member> selectAll() {
+//		final String SQL = "select * from Member";
+//		List<Member> resultList = new ArrayList<>();
+//		try (
+//			Connection conn = getConnection();
+//			PreparedStatement pstmt = conn.prepareStatement(SQL);
+//			ResultSet rs = pstmt.executeQuery()
+//		) {
+//			while (rs.next()) {
+//				Member member = new Member();
+//				member.setId(rs.getInt("ID"));
+//				member.setName(rs.getString("Name"));
+//				member.setPassword(rs.getString("Password"));
+////				member.setNickname(rs.getString("NICKNAME"));
+//
+//
+//				resultList.add(member);
+//			}
+//			return resultList;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	
 

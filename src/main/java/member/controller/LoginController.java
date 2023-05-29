@@ -24,6 +24,7 @@ public class LoginController extends HttpServlet {
 			.create();
 	private static final MemberService SERVICE = new MemberServiceImpl();
 	
+	//註冊
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Member member = GSON.fromJson(req.getReader(), Member.class); //接收前端資料
@@ -35,13 +36,14 @@ public class LoginController extends HttpServlet {
 		resp.getWriter().write(respBody.toString());  //把上面respBody 加進的東西 傳回前端
 	}
 	
+	//登入 回傳member 裡面只有ID
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String pathInfo = req.getPathInfo();  //取得網址後面帶的值 EX:member/1/2/3 拿到/1/2/3 但是拿到要拆開
 		pathInfo = pathInfo.substring(1); //去掉/1/2/3 開頭的斜線 要不然拆要會多個空白
 		String[] pathVariables = pathInfo.split("/"); //把1/2/3拆成陣列 0=第一個
 		Member member = new Member();
-		member.setUsername(pathVariables[0]);
+		member.setPhoneNo(pathVariables[0]);
 		member.setPassword(pathVariables[1]);
 		member = SERVICE.login(member); //把從前端取得的member傳進service
 		
@@ -54,6 +56,7 @@ public class LoginController extends HttpServlet {
 		resp.getWriter().write(GSON.toJson(member));
 	}
 	
+	//編輯個人資料
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Member member = GSON.fromJson(req.getReader(), Member.class); //接收前端資料
@@ -77,7 +80,6 @@ public class LoginController extends HttpServlet {
 	@Override  //回傳當前會員資料 從session拿出來
 	protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Member member = (Member) req.getSession().getAttribute("member");
-		member.setPassword(null);
-		resp.getWriter().write(GSON.toJson(member));
+		resp.getWriter().write(GSON.toJson(member.getId()));
 	}
 }

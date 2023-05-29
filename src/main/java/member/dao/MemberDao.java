@@ -7,11 +7,11 @@ import member.bean.Member;
 public interface MemberDao {
 	int insert(Member member);
 	
-	Member selectForLogin(String username, String password);
+	Member selectForLogin(String phoneNo, String password);
 
 	int update(Member member);
 	
-	List<Member> selectAll();
+//	List<Member> selectAll();
 	
 	Member selectByKey(Integer id);
 	

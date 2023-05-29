@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public Member login(Member member) {
-		return dao.selectForLogin(member.getUsername(), member.getPassword());
+		return dao.selectForLogin(member.getPhoneNo(), member.getPassword());
 	}
 	
 	@Override
@@ -40,10 +40,10 @@ public class MemberServiceImpl implements MemberService {
 		return result > 0;
 	}
 
-	@Override
-	public List<Member> findAllMember() {
-		return dao.selectAll();
-	}
+//	@Override
+//	public List<Member> findAllMember() {
+//		return dao.selectAll();
+//	}
 
 	@Override
 	public Member findMemberById(Integer id) {

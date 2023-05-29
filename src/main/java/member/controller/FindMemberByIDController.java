@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import member.bean.Member;
 
@@ -21,14 +22,13 @@ public class FindMemberByIDController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String pathInfo = req.getPathInfo();  //取得網址後面帶的值 EX:member/1/2/3 拿到/1/2/3 但是拿到要拆開
-		pathInfo = pathInfo.substring(1); //去掉/1/2/3 開頭的斜線 要不然拆要會多個空白
-//		String[] pathVariables = pathInfo.split("/"); //把1/2/3拆成陣列 0=第一個
+		
 		Member member = new Member();	
-		member = SERVICE.findMemberById(Integer.valueOf(pathInfo)); //把從前端取得的member傳進service
+		HttpSession session = req.getSession();
+		Member seMember = (Member) session.getAttribute("member");
+		Integer id = seMember.getId(); 
+		member = SERVICE.findMemberById(Integer.valueOf(id)); //把從前端取得的member傳進service
 
 		resp.getWriter().write(GSON.toJson(member));
 	}
-
-
 }

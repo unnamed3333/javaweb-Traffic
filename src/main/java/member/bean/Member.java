@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 public class Member implements Serializable {
 	private static final long serialVersionUID = -755115136250492823L;
 	private Integer id;  //使用者ID
-	private String username;  //帳號
+	private String name;  //帳號
 	private String password;  //密碼
 	private String nickname;  //暱稱
 	private String identityNumber;  //身分證號碼
@@ -27,11 +27,11 @@ public class Member implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getUsername() {
-		return username;
+	public String getName() {
+		return name;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getPassword() {
 		return password;
@@ -88,5 +88,16 @@ public class Member implements Serializable {
 	public void setCreateDateTime(Timestamp createDateTime) {
 		this.createDateTime = createDateTime;
 	}
-	
+	public Boolean getForumPermissions() {
+		return forumPermissions;
+	}
+	public void setForumPermissions(Boolean forumPermissions) {
+		this.forumPermissions = forumPermissions;
+	}
+	public Boolean getChatPermissions() {
+		return chatPermissions;
+	}
+	public void setChatPermissions(Boolean chatPermissions) {
+		this.chatPermissions = chatPermissions;
+	}
 }

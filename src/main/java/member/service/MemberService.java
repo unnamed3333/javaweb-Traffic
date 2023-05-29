@@ -14,7 +14,7 @@ public interface MemberService {
 
 	Member findMemberById(Integer id);
 	
-	List<Member> findAllMember();
+//	List<Member> findAllMember();
 
 	
 }
