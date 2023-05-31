@@ -77,7 +77,22 @@ public class LoginController extends HttpServlet {
 	
 	@Override  //回傳當前會員資料 從session拿出來
 	protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Member member = (Member) req.getSession().getAttribute("member");
-		resp.getWriter().write(GSON.toJson(member.getId()));
+	    HttpSession session = req.getSession(false);  //檢查是否有紀錄session
+	    if (session != null) {
+	        Member member = (Member) session.getAttribute("member");
+			resp.getWriter().write(GSON.toJson(member.getId()));
+	    } else { //session為null 回傳null
+	    	resp.getWriter().write(GSON.toJson(null));
+		}
+//		Member member = (Member) req.getSession().getAttribute("member");
+//		resp.getWriter().write(GSON.toJson(member.getId()));
+	}
+	
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.getSession().invalidate();
+		JsonObject respBody = new JsonObject();
+		respBody.addProperty("successful", true);
+		resp.getWriter().write(respBody.toString());
 	}
 }
