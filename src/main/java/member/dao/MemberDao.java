@@ -3,6 +3,7 @@ package member.dao;
 import java.util.List;
 
 import core.bean.Member;
+import core.bean.RelatedPerson;
 import core.bean.Vehide;
 
 public interface MemberDao {
@@ -15,10 +16,14 @@ public interface MemberDao {
 	Member selectByKey(Integer id);
 
 	List<Vehide> vehide(Integer target, Integer id);
+
+	List<RelatedPerson> findRelatedPerson(Integer id);
+
+	boolean forgetPassword(String phoneNo);
+
+	int resetPassword(Member member);
 	
-//	List<Vehide> relatedPersonVehide(Integer id);
-	
-//	int deleteByKey(Integer id);
+
 	
 	
 

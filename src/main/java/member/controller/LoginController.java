@@ -63,7 +63,6 @@ public class LoginController extends HttpServlet {
 		HttpSession session = req.getSession();
 		Member seMember = (Member) session.getAttribute("member");
 		Integer id = seMember.getId(); 
-
 		member.setId(id);  //把取得的ID放進member
 
 		boolean result = SERVICE.editMember(member); //把值傳給service
@@ -77,15 +76,13 @@ public class LoginController extends HttpServlet {
 	
 	@Override  //回傳當前會員資料 從session拿出來
 	protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	    HttpSession session = req.getSession(false);  //檢查是否有紀錄session
+		HttpSession session = req.getSession(false);  //檢查是否有紀錄session
 	    if (session != null) {
 	        Member member = (Member) session.getAttribute("member");
 			resp.getWriter().write(GSON.toJson(member.getId()));
 	    } else { //session為null 回傳null
 	    	resp.getWriter().write(GSON.toJson(null));
 		}
-//		Member member = (Member) req.getSession().getAttribute("member");
-//		resp.getWriter().write(GSON.toJson(member.getId()));
 	}
 	
 	@Override

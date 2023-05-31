@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.annotation.WebServlet;
 
 import core.bean.Member;
+import core.bean.RelatedPerson;
 import core.bean.Vehide;
 import member.dao.MemberDao;
 import member.dao.impl.MemberDaoImpl;
@@ -37,11 +38,6 @@ public class MemberServiceImpl implements MemberService {
 		return result > 0;
 	}
 
-//	@Override
-//	public List<Member> findAllMember() {
-//		return dao.selectAll();
-//	}
-
 	@Override
 	public Member findMemberById(Integer id) {
 		return dao.selectByKey(id);
@@ -52,9 +48,20 @@ public class MemberServiceImpl implements MemberService {
 		return dao.vehide(target, id);
 	}
 
-//	@Override
-//	public List<Vehide> relatedPersonVihide(Integer id) {
-//		// TODO Auto-generated method stub
-//		return dao.relatedPersonVehide(id);
-//	}
+	@Override
+	public List<RelatedPerson> findRelatedPerson(Integer id) {
+		return dao.findRelatedPerson(id);
+	}
+
+	@Override
+	public boolean forgetPassword(String phoneNo) {
+		return dao.forgetPassword(phoneNo);
+	}
+
+	@Override
+	public boolean resetPassword(Member member) {
+		return dao.resetPassword(member) > 1;
+	}
+
+
 }

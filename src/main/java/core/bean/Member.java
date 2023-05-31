@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 public class Member implements Serializable {
 	private static final long serialVersionUID = -755115136250492823L;
 	private Integer id;  //使用者ID
-	private String name;  //帳號
+	private String name;  //名子
 	private String password;  //密碼
 	private String nickname;  //暱稱
 	private String identityNumber;  //身分證號碼

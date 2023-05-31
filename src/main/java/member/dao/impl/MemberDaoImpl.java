@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.tomcat.jdbc.pool.DataSource;
 
 import core.bean.Member;
+import core.bean.RelatedPerson;
 import core.bean.Vehide;
 import member.dao.MemberDao;
 
@@ -121,10 +122,10 @@ public class MemberDaoImpl implements MemberDao{
 
 	@Override
 	public Member selectByKey(Integer id) {
-		final String SQL = "select * from Member where ID = ?";
+		final String sql = "select * from Member where ID = ?";
 		try (
 			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(SQL)	
+			PreparedStatement pstmt = conn.prepareStatement(sql)	
 		) {
 			pstmt.setInt(1, id);
 			try (ResultSet rs = pstmt.executeQuery()) {
@@ -179,6 +180,70 @@ public class MemberDaoImpl implements MemberDao{
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public List<RelatedPerson> findRelatedPerson(Integer id) {
+		String sql = "select * from Relatedperson where MemID= ?";
+		List<RelatedPerson> resultList = new ArrayList<>();
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);	
+		) {
+			pstmt.setInt(1, id);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					RelatedPerson relatedPerson = new RelatedPerson();
+					relatedPerson.setId(rs.getInt("ID"));
+					relatedPerson.setName(rs.getString("Name"));
+					relatedPerson.setIdentityNumber(rs.getString("IdentityNumber"));
+					relatedPerson.setBirthday(rs.getString("Birthday"));
+					relatedPerson.setMemberRelationship(rs.getString("MembersRelationship"));
+					resultList.add(relatedPerson);
+				}
+				return resultList;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	
+	@Override
+	public boolean forgetPassword(String phoneNo) {
+		final String sql = "select * from Member where PhoneNo = ?";
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)	
+		) {
+			pstmt.setString(1, phoneNo);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					return true;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public int resetPassword(Member member) {
+		String sql = "update Member set Password = ? where PhoneNo = ?";
+
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)
+		) {
+			pstmt.setString(1, member.getPassword());
+			pstmt.setString(2, member.getPhoneNo());
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 	
 

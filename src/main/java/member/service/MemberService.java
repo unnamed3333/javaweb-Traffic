@@ -3,6 +3,7 @@ package member.service;
 import java.util.List;
 
 import core.bean.Member;
+import core.bean.RelatedPerson;
 import core.bean.Vehide;
 
 public interface MemberService {
@@ -16,6 +17,12 @@ public interface MemberService {
 	Member findMemberById(Integer id);
 
 	List<Vehide> vihide(Integer target, Integer id);
+
+	List<RelatedPerson> findRelatedPerson(Integer id);
+
+	boolean forgetPassword(String phoneNo);
+
+	boolean resetPassword(Member member);
 	
 //	List<Vehide> relatedPersonVihide(Integer id);
 
