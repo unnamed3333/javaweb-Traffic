@@ -2,7 +2,8 @@ package member.dao;
 
 import java.util.List;
 
-import member.bean.Member;
+import core.bean.Member;
+import core.bean.Vehide;
 
 public interface MemberDao {
 	int insert(Member member);
@@ -11,9 +12,11 @@ public interface MemberDao {
 
 	int update(Member member);
 	
-//	List<Member> selectAll();
-	
 	Member selectByKey(Integer id);
+
+	List<Vehide> vehide(Integer target, Integer id);
+	
+//	List<Vehide> relatedPersonVehide(Integer id);
 	
 //	int deleteByKey(Integer id);
 	

@@ -10,7 +10,8 @@ import java.util.List;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 
-import member.bean.Member;
+import core.bean.Member;
+import core.bean.Vehide;
 import member.dao.MemberDao;
 
 public class MemberDaoImpl implements MemberDao{
@@ -18,11 +19,12 @@ public class MemberDaoImpl implements MemberDao{
 	
 	@Override
 	public int insert(Member member) {
-		final String SQL = "insert into Member(NAME, PASSWORD, NICKNAME, IDENTITYNUMBER, BIRTHDAY, PHONENO, ADDRESS, EMAIL, AVATAR ) "
+		
+		final String sql = "insert into Member(Name, Password, Ncikname, Identitynumber, Birthday, Phoneno, Address, Email, Avatar ) "
 				+ "values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try (
 			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(SQL)
+			PreparedStatement pstmt = conn.prepareStatement(sql)
 		) {
 			pstmt.setString(1, member.getName());
 			pstmt.setString(2, member.getPassword());
@@ -42,10 +44,10 @@ public class MemberDaoImpl implements MemberDao{
 	
 	@Override
 	public Member selectForLogin(String phoneNo, String password) {
-		final String SQL = "select * from Member where Phoneno = ? and Password = ?";
+		final String sql = "select * from Member where Phoneno = ? and Password = ?";
 		try (
 			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(SQL)
+			PreparedStatement pstmt = conn.prepareStatement(sql)
 		) {
 			pstmt.setString(1, phoneNo);
 			pstmt.setString(2, password);
@@ -66,6 +68,9 @@ public class MemberDaoImpl implements MemberDao{
 	public int update(Member member) {
 		System.out.println(member.getPassword());
 		String sql = "update Member set ";
+		//修改名子
+		String name = member.getName();
+		if(name != null && !name.isEmpty()) {sql += "Name = ?";}
 		//修改密碼
 		String password = member.getPassword();
 		if(password != null && !password.isEmpty()) {sql += "Password = ?";}
@@ -97,6 +102,7 @@ public class MemberDaoImpl implements MemberDao{
 			Connection conn = getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql)
 		) {
+			if(name != null && !name.isEmpty()) {pstmt.setString(1, name);}
 			if(password != null && !password.isEmpty()) {pstmt.setString(1, password);}
 			if(nickname != null && !nickname.isEmpty()) {pstmt.setString(1, nickname);}
 			if(identityNo != null && !identityNo.isEmpty()) {pstmt.setString(1, identityNo);}
@@ -134,6 +140,8 @@ public class MemberDaoImpl implements MemberDao{
 					member.setPhoneNo(rs.getString("PhoneNo"));
 					member.setEmail(rs.getString("Email"));
 					member.setAddress(rs.getString("Address"));
+					member.setChatPermissions(rs.getBoolean("ChatPermissions"));
+					member.setForumPermissions(rs.getBoolean("ForumPermissions"));
 
 					return member;
 				}
@@ -143,33 +151,35 @@ public class MemberDaoImpl implements MemberDao{
 		}
 		return null;
 	}
-	
-//	@Override
-//	public List<Member> selectAll() {
-//		final String SQL = "select * from Member";
-//		List<Member> resultList = new ArrayList<>();
-//		try (
-//			Connection conn = getConnection();
-//			PreparedStatement pstmt = conn.prepareStatement(SQL);
-//			ResultSet rs = pstmt.executeQuery()
-//		) {
-//			while (rs.next()) {
-//				Member member = new Member();
-//				member.setId(rs.getInt("ID"));
-//				member.setName(rs.getString("Name"));
-//				member.setPassword(rs.getString("Password"));
-////				member.setNickname(rs.getString("NICKNAME"));
-//
-//
-//				resultList.add(member);
-//			}
-//			return resultList;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
-	
+
+	@Override
+	public List<Vehide> vehide(Integer target, Integer id) {
+		String sql = "select * from Vehicle where ";
+		if (target == 1) {
+			sql += "MemID = ?";
+		} else {
+			sql += "RelatedPersonID = ?";
+		}
+		List<Vehide> resultList = new ArrayList<>();
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);	
+		) {
+			pstmt.setInt(1, id);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					Vehide vehide = new Vehide();
+					vehide.setVehideType(rs.getString("VehicleType"));
+					vehide.setVehideNumber(rs.getString("VehicleNo"));
+					resultList.add(vehide);
+				}
+				return resultList;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 
 

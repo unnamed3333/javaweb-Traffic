@@ -2,7 +2,8 @@ package member.service;
 
 import java.util.List;
 
-import member.bean.Member;
+import core.bean.Member;
+import core.bean.Vehide;
 
 public interface MemberService {
 
@@ -13,8 +14,11 @@ public interface MemberService {
 	boolean editMember(Member member);
 
 	Member findMemberById(Integer id);
+
+	List<Vehide> vihide(Integer target, Integer id);
 	
-//	List<Member> findAllMember();
+//	List<Vehide> relatedPersonVihide(Integer id);
+
 
 	
 }

@@ -5,6 +5,8 @@ import static member.util.MemberConstants.SERVICE;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,21 +16,30 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import core.bean.Member;
+import core.bean.Vehide;
 
 
-@WebServlet("/FindMemberByID/*")
-public class FindMemberByIDController extends HttpServlet {
+@WebServlet("/Vehide/*")
+public class VehideController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		Member member = new Member();	
 		HttpSession session = req.getSession();
 		Member seMember = (Member) session.getAttribute("member");
 		Integer id = seMember.getId(); 
-		member = SERVICE.findMemberById(Integer.valueOf(id)); //把從前端取得的member傳進service
-
-		resp.getWriter().write(GSON.toJson(member));
+		
+		String pathInfo = req.getPathInfo(); //取得網址後面帶的值
+		pathInfo = pathInfo.substring(1); //去掉開頭的斜線
+		String[] pathVariables = pathInfo.split("/"); //把網址拆成陣列 [0]==0是會員 [0]==1是關係人 是關係人的話 後面還有[1] 這是關係人ID
+		List<Vehide> list = new ArrayList<>();
+		if (pathVariables[0].equals("1")) { //1是會員 2是關係人
+			System.out.println("是會員");
+			list = SERVICE.vihide(1, id);
+		}else {
+			System.out.println("是關係人");
+			list = SERVICE.vihide(2, id);
+		}
+		resp.getWriter().write(GSON.toJson(list));
 	}
 }

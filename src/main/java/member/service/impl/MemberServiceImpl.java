@@ -1,15 +1,12 @@
 package member.service.impl;
 
-import java.io.IOException;
+
 import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import member.bean.Member;
+import core.bean.Member;
+import core.bean.Vehide;
 import member.dao.MemberDao;
 import member.dao.impl.MemberDaoImpl;
 import member.service.MemberService;
@@ -49,4 +46,15 @@ public class MemberServiceImpl implements MemberService {
 	public Member findMemberById(Integer id) {
 		return dao.selectByKey(id);
 	}
+
+	@Override
+	public List<Vehide> vihide(Integer target, Integer id) {
+		return dao.vehide(target, id);
+	}
+
+//	@Override
+//	public List<Vehide> relatedPersonVihide(Integer id) {
+//		// TODO Auto-generated method stub
+//		return dao.relatedPersonVehide(id);
+//	}
 }

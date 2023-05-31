@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import member.bean.Member;
+import core.bean.Member;
 import member.service.MemberService;
 import member.service.impl.MemberServiceImpl;
 
@@ -31,8 +31,6 @@ public class LoginController extends HttpServlet {
 		boolean result = SERVICE.register(member); //把值傳給service
 		JsonObject respBody = new JsonObject();
 		respBody.addProperty("successful", result); //把service傳回來的值放進successful
-		String message = "註冊" + (result ? "成功" : "失敗");
-		respBody.addProperty("message", message);
 		resp.getWriter().write(respBody.toString());  //把上面respBody 加進的東西 傳回前端
 	}
 	
@@ -60,7 +58,7 @@ public class LoginController extends HttpServlet {
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Member member = GSON.fromJson(req.getReader(), Member.class); //接收前端資料
-		System.out.println("進入put");
+		System.out.println(member);
 		//這3行取得登入的人的ID
 		HttpSession session = req.getSession();
 		Member seMember = (Member) session.getAttribute("member");
