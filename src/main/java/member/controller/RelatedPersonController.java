@@ -20,8 +20,8 @@ import core.bean.RelatedPerson;
 import core.bean.Vehide;
 
 
-@WebServlet("/FindRelatedPerson/*")
-public class FindRelatedPersonController extends HttpServlet {
+@WebServlet("/RelatedPerson/*")
+public class RelatedPersonController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
