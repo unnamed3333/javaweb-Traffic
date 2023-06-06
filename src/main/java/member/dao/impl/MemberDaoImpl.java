@@ -21,8 +21,8 @@ public class MemberDaoImpl implements MemberDao{
 	@Override
 	public int insert(Member member) {
 		
-		final String sql = "insert into Member(Name, Password, Ncikname, Identitynumber, Birthday, Phoneno, Address, Email, Avatar ) "
-				+ "values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		final String sql = "insert into Member(Name, Password, Nickname, Identitynumber, Birthday, Phoneno, Address, Email ) "
+				+ "values(?, ?, ?, ?, ?, ?, ?, ?)";
 		try (
 			Connection conn = getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql)
@@ -35,7 +35,7 @@ public class MemberDaoImpl implements MemberDao{
 			pstmt.setString(6, member.getPhoneNo());
 			pstmt.setString(7, member.getAddress());
 			pstmt.setString(8, member.getEmail());
-			pstmt.setString(8, member.getAvatar());
+//			pstmt.setString(9, member.getAvatar());
 			return pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,6 +96,12 @@ public class MemberDaoImpl implements MemberDao{
 		//修改頭像
 		String avatar = member.getAvatar();
 		if(avatar != null && !avatar.isEmpty()) {sql += "Avatar = ?";}
+		//修改論壇權限
+		Boolean forumPermissions = member.getForumPermissions();
+		if(forumPermissions != null) {sql += "ForumPermissions = ?";}
+		//修改私訊權限
+		Boolean chatPermissions = member.getChatPermissions();
+		if(chatPermissions != null) {sql += "ChatPermissions = ?";}
 		
 		sql += " where ID = ?";
 		
@@ -112,6 +118,8 @@ public class MemberDaoImpl implements MemberDao{
 			if(address != null && !address.isEmpty()) {pstmt.setString(1, address);}
 			if(email != null && !email.isEmpty()) {pstmt.setString(1, email);}
 			if(avatar != null && !avatar.isEmpty()) {pstmt.setString(1, avatar);}
+			if(forumPermissions != null) {pstmt.setBoolean(1, forumPermissions);}
+			if(chatPermissions != null) {pstmt.setBoolean(1, chatPermissions);}
 			pstmt.setInt(2, member.getId());
 			return pstmt.executeUpdate();
 		} catch (Exception e) {
