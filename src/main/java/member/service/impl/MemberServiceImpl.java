@@ -1,6 +1,7 @@
 package member.service.impl;
 
 
+import java.util.Base64;
 import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
@@ -34,6 +35,12 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public boolean editMember(Member member) {
+		String base64 = member.getAvatarBase64();
+		if (base64 != null && !base64.isEmpty()) {
+			byte[] avatar = Base64.getDecoder().decode(base64);
+			member.setAvatar(avatar);
+		}
+		
 		int result = dao.update(member);
 		return result > 0;
 	}
