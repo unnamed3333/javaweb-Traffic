@@ -16,7 +16,7 @@ public class Member implements Serializable {
 	private String email;  //email
 	private String avatar;  //頭像型態不知道用啥 之後老師上課會教
     private Boolean forumPermissions;
-    private Boolean  chatPermissions;
+    private Boolean chatPermissions;
 	private Timestamp createDateTime;  //建立時間
 	
 	

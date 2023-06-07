@@ -27,7 +27,9 @@ public class LoginController extends HttpServlet {
 	//註冊
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("進入POST");
 		Member member = GSON.fromJson(req.getReader(), Member.class); //接收前端資料
+		System.out.println("hh");
 		boolean result = SERVICE.register(member); //把值傳給service
 		JsonObject respBody = new JsonObject();
 		respBody.addProperty("successful", result); //把service傳回來的值放進successful
@@ -37,6 +39,7 @@ public class LoginController extends HttpServlet {
 	//登入 回傳member 裡面只有ID
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("進入GET");
 		String pathInfo = req.getPathInfo();  //取得網址後面帶的值 EX:member/1/2/3 拿到/1/2/3 但是拿到要拆開
 		pathInfo = pathInfo.substring(1); //去掉/1/2/3 開頭的斜線 要不然拆要會多個空白
 		String[] pathVariables = pathInfo.split("/"); //把1/2/3拆成陣列 0=第一個
@@ -57,6 +60,7 @@ public class LoginController extends HttpServlet {
 	//編輯個人資料
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("進入PUT");
 		Member member = GSON.fromJson(req.getReader(), Member.class); //接收前端資料
 		System.out.println(member);
 		//這3行取得登入的人的ID
@@ -68,14 +72,12 @@ public class LoginController extends HttpServlet {
 		boolean result = SERVICE.editMember(member); //把值傳給service
 		JsonObject respBody = new JsonObject();
 		respBody.addProperty("successful", result);
-		String message = "編輯" + (result ? "成功" : "失敗");
-
-		respBody.addProperty("message", message);
 		resp.getWriter().write(respBody.toString());  //把上面respBody 加進的東西 傳回前端
 	}
 	
 	@Override  //回傳當前會員資料 從session拿出來
 	protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("進入OPTIONS");
 		HttpSession session = req.getSession(false);  //檢查是否有紀錄session
 	    if (session != null) {
 	        Member member = (Member) session.getAttribute("member");
