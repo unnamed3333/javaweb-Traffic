@@ -94,8 +94,8 @@ public class MemberDaoImpl implements MemberDao{
 		String email = member.getEmail();
 		if(email != null && !email.isEmpty()) {sql += "Email = ?";}
 		//修改頭像
-		String avatar = member.getAvatar();
-		if(avatar != null && !avatar.isEmpty()) {sql += "Avatar = ?";}
+		byte[] avatar = member.getAvatar();
+		if(avatar != null && avatar.length != 0) {sql += "Avatar = ?";}
 		//修改論壇權限
 		Boolean forumPermissions = member.getForumPermissions();
 		if(forumPermissions != null) {sql += "ForumPermissions = ?";}
@@ -117,7 +117,7 @@ public class MemberDaoImpl implements MemberDao{
 			if(phoneNo != null && !phoneNo.isEmpty()) {pstmt.setString(1, phoneNo);}
 			if(address != null && !address.isEmpty()) {pstmt.setString(1, address);}
 			if(email != null && !email.isEmpty()) {pstmt.setString(1, email);}
-			if(avatar != null && !avatar.isEmpty()) {pstmt.setString(1, avatar);}
+			if(avatar != null && avatar.length != 0) {pstmt.setBytes(1, avatar);}
 			if(forumPermissions != null) {pstmt.setBoolean(1, forumPermissions);}
 			if(chatPermissions != null) {pstmt.setBoolean(1, chatPermissions);}
 			pstmt.setInt(2, member.getId());
@@ -140,7 +140,7 @@ public class MemberDaoImpl implements MemberDao{
 				if (rs.next()) {
 					Member member = new Member();
 					member.setId(rs.getInt("ID"));
-					member.setAvatar(rs.getString("Avatar"));;
+					member.setAvatar(rs.getBytes("Avatar"));
 					member.setName(rs.getString("Name"));
 					member.setPassword(rs.getString("Password"));
 					member.setNickname(rs.getString("Nickname"));

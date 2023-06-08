@@ -33,10 +33,10 @@ public class VehideController extends HttpServlet {
 		pathInfo = pathInfo.substring(1); //去掉開頭的斜線
 		String[] pathVariables = pathInfo.split("/"); //把網址拆成陣列 [0]==0是會員 [0]==1是關係人 是關係人的話 後面還有[1] 這是關係人ID
 		List<Vehide> list = new ArrayList<>();
-		if (pathVariables[0].equals("1")) { //1是會員 2是關係人
+		if (pathVariables[0].equals("0")) { //1是會員 2是關係人
 			list = SERVICE.vihide(1, id);
 		}else {
-			list = SERVICE.vihide(2, id);
+			list = SERVICE.vihide(2, Integer.parseInt(pathVariables[1])); //
 		}
 		resp.getWriter().write(GSON.toJson(list));
 	}

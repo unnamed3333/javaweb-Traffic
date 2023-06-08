@@ -5,6 +5,7 @@ import static member.util.MemberConstants.SERVICE;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Base64;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,7 +29,8 @@ public class FindMemberByIDController extends HttpServlet {
 		Member seMember = (Member) session.getAttribute("member");
 		Integer id = seMember.getId(); 
 		member = SERVICE.findMemberById(Integer.valueOf(id)); //把從前端取得的member傳進service
-
+		String avatarBase64 = Base64.getEncoder().encodeToString(member.getAvatar()); //把blob轉成base64 而且要判斷NULL 梅圖匯出錯
+		member.setAvatarBase64(avatarBase64); 
 		resp.getWriter().write(GSON.toJson(member));
 	}
 }

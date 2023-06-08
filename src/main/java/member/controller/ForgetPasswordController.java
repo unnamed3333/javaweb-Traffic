@@ -41,9 +41,6 @@ public class ForgetPasswordController extends HttpServlet {
 		boolean result = SERVICE.resetPassword(member); //把值傳給service
 		JsonObject respBody = new JsonObject();
 		respBody.addProperty("successful", result);
-		String message = "編輯" + (result ? "成功" : "失敗");
-
-		respBody.addProperty("message", message);
 		resp.getWriter().write(respBody.toString());  //把上面respBody 加進的東西 傳回前端
 	}
 }
