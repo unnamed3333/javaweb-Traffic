@@ -16,7 +16,7 @@ import core.bean.Ticket;
 import ticket.service.TicketService;
 import ticket.service.impl.TicketServiceImpl;
 
-@WebServlet("/FindTicketByMemId/*")
+@WebServlet("/Ticket/FindTicketByMemId/*")
 public class FindTicketByMemIdController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 //	讓兩邊時間格式一樣

@@ -10,5 +10,5 @@ public interface TicketDao {
 
 	List<Ticket> selectByMemIdHistory(Integer memId);
 
-	List<String> slectAllAppendix(String ticketNo);
+	List<byte[]> selectAllAppendix(String ticketNo);
 }

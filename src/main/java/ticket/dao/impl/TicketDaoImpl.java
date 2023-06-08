@@ -43,7 +43,7 @@ public class TicketDaoImpl implements TicketDao {
 					ticket.setUnit(rs.getString("unit"));
 					ticket.setStatus(rs.getInt("status"));
 					ticket.setPaymentTime(rs.getTimestamp("paymentTime"));
-					ticket.setAppendix(slectAllAppendix(rs.getString("ticketNo")));
+					ticket.setAppendix(selectAllAppendix(rs.getString("ticketNo")));
 					list.add(ticket);
 				}
 				return list;
@@ -83,7 +83,7 @@ public class TicketDaoImpl implements TicketDao {
 					ticket.setUnit(rs.getString("unit"));
 					ticket.setStatus(rs.getInt("status"));
 					ticket.setPaymentTime(rs.getTimestamp("paymentTime"));
-					ticket.setAppendix(slectAllAppendix(rs.getString("ticketNo")));
+					ticket.setAppendix(selectAllAppendix(rs.getString("ticketNo")));
 					list.add(ticket);
 				}
 				return list;
@@ -95,14 +95,14 @@ public class TicketDaoImpl implements TicketDao {
 	}
 
 	@Override
-	public List<String> slectAllAppendix(String ticketNo) {
+	public List<byte[]> selectAllAppendix(String ticketNo) {
 		final String sql = "select * from Appendix where ticketNo = ?";
 		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setString(1, ticketNo);
 			try (ResultSet rs = pstmt.executeQuery()) {
-				List<String> result = new ArrayList<>();
+				List<byte[]> result = new ArrayList<>();
 				if (rs.next()) {
-					result.add(rs.getString("Appendix"));
+					result.add(rs.getBytes("Appendix"));
 					return result;
 				}
 			}
