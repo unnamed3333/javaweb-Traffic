@@ -22,7 +22,7 @@ public class Ticket implements Serializable {
     private String unit; // 單位
     private Integer status; // 0=未繳納、1=已繳納、2=申訴中、3=申訴成功
     private Timestamp paymentTime; // 繳納時間
-    private List<String> Appendix; // 附件list
+    private List<byte[]> Appendix; // 附件list
 	
     public String getTicketNo() {
 		return ticketNo;
@@ -120,10 +120,10 @@ public class Ticket implements Serializable {
 	public void setPaymentTime(Timestamp paymentTime) {
 		this.paymentTime = paymentTime;
 	}
-	public List<String> getAppendix() {
+	public List<byte[]> getAppendix() {
 		return Appendix;
 	}
-	public void setAppendix(List<String> appendix) {
+	public void setAppendix(List<byte[]> appendix) {
 		Appendix = appendix;
 	}
 }
