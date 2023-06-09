@@ -207,6 +207,8 @@ public class MemberDaoImpl implements MemberDao{
 					relatedPerson.setIdentityNumber(rs.getString("IdentityNumber"));
 					relatedPerson.setBirthday(rs.getString("Birthday"));
 					relatedPerson.setMemberRelationship(rs.getString("MembersRelationship"));
+					relatedPerson.setAvatar(rs.getBytes("AVATAR"));
+					
 					resultList.add(relatedPerson);
 				}
 				return resultList;
@@ -247,6 +249,67 @@ public class MemberDaoImpl implements MemberDao{
 		) {
 			pstmt.setString(1, member.getPassword());
 			pstmt.setString(2, member.getPhoneNo());
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
+	@Override
+	public int relatedPersonInsert(RelatedPerson relatedPerson, Integer id) {
+		final String sql = "insert into relatedperson(Name, IdentityNumber, Birthday, MembersRelationship, Avatar, MemID) "
+				+ "values(?, ?, ?, ?, ?, ?)";
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)
+		) {
+			pstmt.setString(1, relatedPerson.getName());
+			pstmt.setString(2, relatedPerson.getIdentityNumber());
+			pstmt.setString(3, relatedPerson.getBirthday());
+			pstmt.setString(4, relatedPerson.getMemberRelationship());
+			pstmt.setBytes(5, relatedPerson.getAvatar());
+			pstmt.setInt(6, id);
+
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
+	@Override
+	public int updateRelatedPerson(RelatedPerson relatedPerson) {
+		String sql = "update relatedperson set ";
+		//修改名子
+		String name = relatedPerson.getName();
+		if(name != null && !name.isEmpty()) {sql += "Name = ?";}
+		//修改身分證號碼
+		String identityNo = relatedPerson.getIdentityNumber();
+		if(identityNo != null && !identityNo.isEmpty()) {sql += "IdentityNumber = ?";}
+		//修改生日
+		String birthday = relatedPerson.getBirthday();
+		if(birthday != null && !birthday.isEmpty()) {sql += "Birthday = ?";}
+		//修改生日
+		String memberRelationship = relatedPerson.getMemberRelationship();
+		if(memberRelationship != null && !memberRelationship.isEmpty()) {sql += "MembersRelationship = ?";}
+		//修改頭像
+		byte[] avatar = relatedPerson.getAvatar();
+		if(avatar != null && avatar.length != 0) {sql += "Avatar = ?";}
+
+		sql += " where ID = ?";
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)
+		) {
+			if(name != null && !name.isEmpty()) {pstmt.setString(1, name);}
+			if(identityNo != null && !identityNo.isEmpty()) {pstmt.setString(1, identityNo);}
+			if(birthday != null && !birthday.isEmpty()) {pstmt.setString(1, birthday);}
+			if(memberRelationship != null && !memberRelationship.isEmpty()) {pstmt.setString(1, memberRelationship);}
+			if(avatar != null && avatar.length != 0) {pstmt.setBytes(1, avatar);}
+
+			pstmt.setInt(2, relatedPerson.getId());
 			return pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
