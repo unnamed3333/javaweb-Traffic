@@ -70,5 +70,28 @@ public class MemberServiceImpl implements MemberService {
 		return dao.resetPassword(member) > 1;
 	}
 
+	@Override
+	public boolean relatedPersonRegister(RelatedPerson relatedPerson, Integer id) {
+		String base64 = relatedPerson.getAvatarBase64();
+		if (base64 != null && !base64.isEmpty()) {
+			byte[] avatar = Base64.getDecoder().decode(base64);
+			relatedPerson.setAvatar(avatar);
+		}
+		int result = dao.relatedPersonInsert(relatedPerson, id);
+		return result > 0;
+	}
+
+	@Override
+	public boolean editRelatedPerson(RelatedPerson relatedPerson) {
+		String base64 = relatedPerson.getAvatarBase64();
+		if (base64 != null && !base64.isEmpty()) {
+			byte[] avatar = Base64.getDecoder().decode(base64);
+			relatedPerson.setAvatar(avatar);
+		}
+		
+		int result = dao.updateRelatedPerson(relatedPerson);
+		return result > 0;
+	}
+
 
 }
