@@ -102,7 +102,7 @@ public class TicketDaoImpl implements TicketDao {
 			try (ResultSet rs = pstmt.executeQuery()) {
 				List<byte[]> result = new ArrayList<>();
 				if (rs.next()) {
-					result.add(rs.getBytes("Appendix"));
+					result.add(rs.getBytes("appendix"));
 					return result;
 				}
 			}

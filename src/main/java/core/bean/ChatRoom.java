@@ -5,6 +5,10 @@ public class ChatRoom {
     private Integer ID; // ID
     private Integer memID1; // 會員ID_1
     private Integer memID2; // 會員ID_2
+    private String nickname; // 另外一個使用者的暱稱
+    private byte[] avatar; // 另外一個使用者的頭貼
+    private String avatarBase64;
+    
 	public Integer getID() {
 		return ID;
 	}
@@ -23,4 +27,23 @@ public class ChatRoom {
 	public void setMemID2(Integer memID2) {
 		this.memID2 = memID2;
 	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public byte[] getAvatar() {
+		return avatar;
+	}
+	public void setAvatar(byte[] avatar) {
+		this.avatar = avatar;
+	}
+	public String getAvatarBase64() {
+		return avatarBase64;
+	}
+	public void setAvatarBase64(String avatarBase64) {
+		this.avatarBase64 = avatarBase64;
+	}
+
 }
