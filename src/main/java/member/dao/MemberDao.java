@@ -22,6 +22,10 @@ public interface MemberDao {
 	boolean forgetPassword(String phoneNo);
 
 	int resetPassword(Member member);
+
+	int relatedPersonInsert(RelatedPerson relatedPerson, Integer id);
+
+	int updateRelatedPerson(RelatedPerson relatedPerson);
 	
 
 	

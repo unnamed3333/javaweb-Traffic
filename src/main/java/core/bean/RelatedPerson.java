@@ -10,6 +10,22 @@ public class RelatedPerson implements Serializable {
 	private String identityNumber;  //身分證號碼
 	private String birthday;  //生日
 	private String memberRelationship;  //關係
+	private String avatarBase64; //前端傳來的base64
+	private byte[] avatar; //?
+	
+	
+	public String getAvatarBase64() {
+		return avatarBase64;
+	}
+	public void setAvatarBase64(String avatarBase64) {
+		this.avatarBase64 = avatarBase64;
+	}
+	public byte[] getAvatar() {
+		return avatar;
+	}
+	public void setAvatar(byte[] avatar) {
+		this.avatar = avatar;
+	}
 	public Integer getId() {
 		return id;
 	}

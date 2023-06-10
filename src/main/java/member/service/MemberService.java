@@ -23,6 +23,10 @@ public interface MemberService {
 	boolean forgetPassword(String phoneNo);
 
 	boolean resetPassword(Member member);
+
+	boolean relatedPersonRegister(RelatedPerson relatedPerson, Integer id);
+
+	boolean editRelatedPerson(RelatedPerson relatedPerson);
 	
 //	List<Vehide> relatedPersonVihide(Integer id);
 

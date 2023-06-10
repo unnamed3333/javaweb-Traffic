@@ -21,8 +21,8 @@ public class MemberDaoImpl implements MemberDao{
 	@Override
 	public int insert(Member member) {
 		
-		final String sql = "insert into Member(Name, Password, Ncikname, Identitynumber, Birthday, Phoneno, Address, Email, Avatar ) "
-				+ "values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		final String sql = "insert into Member(Name, Password, Nickname, Identitynumber, Birthday, Phoneno, Address, Email ) "
+				+ "values(?, ?, ?, ?, ?, ?, ?, ?)";
 		try (
 			Connection conn = getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql)
@@ -35,7 +35,7 @@ public class MemberDaoImpl implements MemberDao{
 			pstmt.setString(6, member.getPhoneNo());
 			pstmt.setString(7, member.getAddress());
 			pstmt.setString(8, member.getEmail());
-			pstmt.setString(8, member.getAvatar());
+//			pstmt.setString(9, member.getAvatar());
 			return pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,8 +94,14 @@ public class MemberDaoImpl implements MemberDao{
 		String email = member.getEmail();
 		if(email != null && !email.isEmpty()) {sql += "Email = ?";}
 		//修改頭像
-		String avatar = member.getAvatar();
-		if(avatar != null && !avatar.isEmpty()) {sql += "Avatar = ?";}
+		byte[] avatar = member.getAvatar();
+		if(avatar != null && avatar.length != 0) {sql += "Avatar = ?";}
+		//修改論壇權限
+		Boolean forumPermissions = member.getForumPermissions();
+		if(forumPermissions != null) {sql += "ForumPermissions = ?";}
+		//修改私訊權限
+		Boolean chatPermissions = member.getChatPermissions();
+		if(chatPermissions != null) {sql += "ChatPermissions = ?";}
 		
 		sql += " where ID = ?";
 		
@@ -111,7 +117,9 @@ public class MemberDaoImpl implements MemberDao{
 			if(phoneNo != null && !phoneNo.isEmpty()) {pstmt.setString(1, phoneNo);}
 			if(address != null && !address.isEmpty()) {pstmt.setString(1, address);}
 			if(email != null && !email.isEmpty()) {pstmt.setString(1, email);}
-			if(avatar != null && !avatar.isEmpty()) {pstmt.setString(1, avatar);}
+			if(avatar != null && avatar.length != 0) {pstmt.setBytes(1, avatar);}
+			if(forumPermissions != null) {pstmt.setBoolean(1, forumPermissions);}
+			if(chatPermissions != null) {pstmt.setBoolean(1, chatPermissions);}
 			pstmt.setInt(2, member.getId());
 			return pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -132,7 +140,7 @@ public class MemberDaoImpl implements MemberDao{
 				if (rs.next()) {
 					Member member = new Member();
 					member.setId(rs.getInt("ID"));
-					member.setAvatar(rs.getString("Avatar"));;
+					member.setAvatar(rs.getBytes("Avatar"));
 					member.setName(rs.getString("Name"));
 					member.setPassword(rs.getString("Password"));
 					member.setNickname(rs.getString("Nickname"));
@@ -199,6 +207,8 @@ public class MemberDaoImpl implements MemberDao{
 					relatedPerson.setIdentityNumber(rs.getString("IdentityNumber"));
 					relatedPerson.setBirthday(rs.getString("Birthday"));
 					relatedPerson.setMemberRelationship(rs.getString("MembersRelationship"));
+					relatedPerson.setAvatar(rs.getBytes("AVATAR"));
+					
 					resultList.add(relatedPerson);
 				}
 				return resultList;
@@ -239,6 +249,67 @@ public class MemberDaoImpl implements MemberDao{
 		) {
 			pstmt.setString(1, member.getPassword());
 			pstmt.setString(2, member.getPhoneNo());
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
+	@Override
+	public int relatedPersonInsert(RelatedPerson relatedPerson, Integer id) {
+		final String sql = "insert into relatedperson(Name, IdentityNumber, Birthday, MembersRelationship, Avatar, MemID) "
+				+ "values(?, ?, ?, ?, ?, ?)";
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)
+		) {
+			pstmt.setString(1, relatedPerson.getName());
+			pstmt.setString(2, relatedPerson.getIdentityNumber());
+			pstmt.setString(3, relatedPerson.getBirthday());
+			pstmt.setString(4, relatedPerson.getMemberRelationship());
+			pstmt.setBytes(5, relatedPerson.getAvatar());
+			pstmt.setInt(6, id);
+
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
+	@Override
+	public int updateRelatedPerson(RelatedPerson relatedPerson) {
+		String sql = "update relatedperson set ";
+		//修改名子
+		String name = relatedPerson.getName();
+		if(name != null && !name.isEmpty()) {sql += "Name = ?";}
+		//修改身分證號碼
+		String identityNo = relatedPerson.getIdentityNumber();
+		if(identityNo != null && !identityNo.isEmpty()) {sql += "IdentityNumber = ?";}
+		//修改生日
+		String birthday = relatedPerson.getBirthday();
+		if(birthday != null && !birthday.isEmpty()) {sql += "Birthday = ?";}
+		//修改生日
+		String memberRelationship = relatedPerson.getMemberRelationship();
+		if(memberRelationship != null && !memberRelationship.isEmpty()) {sql += "MembersRelationship = ?";}
+		//修改頭像
+		byte[] avatar = relatedPerson.getAvatar();
+		if(avatar != null && avatar.length != 0) {sql += "Avatar = ?";}
+
+		sql += " where ID = ?";
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)
+		) {
+			if(name != null && !name.isEmpty()) {pstmt.setString(1, name);}
+			if(identityNo != null && !identityNo.isEmpty()) {pstmt.setString(1, identityNo);}
+			if(birthday != null && !birthday.isEmpty()) {pstmt.setString(1, birthday);}
+			if(memberRelationship != null && !memberRelationship.isEmpty()) {pstmt.setString(1, memberRelationship);}
+			if(avatar != null && avatar.length != 0) {pstmt.setBytes(1, avatar);}
+
+			pstmt.setInt(2, relatedPerson.getId());
 			return pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

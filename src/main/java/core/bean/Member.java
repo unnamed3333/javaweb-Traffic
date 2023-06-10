@@ -14,9 +14,10 @@ public class Member implements Serializable {
 	private String phoneNo;  //手機號碼
 	private String address;  //地址
 	private String email;  //email
-	private String avatar;  //頭像型態不知道用啥 之後老師上課會教
+	private String avatarBase64; //前端傳來的base64
+	private byte[] avatar; //?
     private Boolean forumPermissions;
-    private Boolean  chatPermissions;
+    private Boolean chatPermissions;
 	private Timestamp createDateTime;  //建立時間
 	
 	
@@ -76,10 +77,17 @@ public class Member implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getAvatar() {
+
+	public String getAvatarBase64() {
+		return avatarBase64;
+	}
+	public void setAvatarBase64(String avatarBase64) {
+		this.avatarBase64 = avatarBase64;
+	}
+	public byte[] getAvatar() {
 		return avatar;
 	}
-	public void setAvatar(String avatar) {
+	public void setAvatar(byte[] avatar) {
 		this.avatar = avatar;
 	}
 	public Timestamp getCreateDateTime() {
