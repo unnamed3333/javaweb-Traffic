@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 
+import core.bean.FineAppend;
 import core.bean.Member;
 import core.bean.RelatedPerson;
 import core.bean.Vehide;
@@ -310,6 +311,25 @@ public class MemberDaoImpl implements MemberDao{
 			if(avatar != null && avatar.length != 0) {pstmt.setBytes(1, avatar);}
 
 			pstmt.setInt(2, relatedPerson.getId());
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
+	@Override
+	public int insertFineAppeal(FineAppend fineAppend) {
+		
+		final String sql = "insert into fineappeal(TicketNo, TicketNo, Remark ) "
+				+ "values(?, ?, ?)";
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql)
+		) {
+			pstmt.setString(1, fineAppend.getTicketNo());
+			pstmt.setString(2, fineAppend.getReason());
+			pstmt.setString(3, fineAppend.getRemark());
 			return pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

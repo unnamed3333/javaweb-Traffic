@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
 
+import core.bean.FineAppend;
 import core.bean.Member;
 import core.bean.RelatedPerson;
 import core.bean.Vehide;
@@ -90,6 +91,12 @@ public class MemberServiceImpl implements MemberService {
 		}
 		
 		int result = dao.updateRelatedPerson(relatedPerson);
+		return result > 0;
+	}
+
+	@Override
+	public boolean insertFineAppeal(FineAppend fineAppend) {
+		int result = dao.insertFineAppeal(fineAppend);
 		return result > 0;
 	}
 

@@ -2,6 +2,7 @@ package member.dao;
 
 import java.util.List;
 
+import core.bean.FineAppend;
 import core.bean.Member;
 import core.bean.RelatedPerson;
 import core.bean.Vehide;
@@ -26,6 +27,8 @@ public interface MemberDao {
 	int relatedPersonInsert(RelatedPerson relatedPerson, Integer id);
 
 	int updateRelatedPerson(RelatedPerson relatedPerson);
+
+	int insertFineAppeal(FineAppend fineAppend);
 	
 
 	

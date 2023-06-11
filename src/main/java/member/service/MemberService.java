@@ -2,6 +2,7 @@ package member.service;
 
 import java.util.List;
 
+import core.bean.FineAppend;
 import core.bean.Member;
 import core.bean.RelatedPerson;
 import core.bean.Vehide;
@@ -27,6 +28,8 @@ public interface MemberService {
 	boolean relatedPersonRegister(RelatedPerson relatedPerson, Integer id);
 
 	boolean editRelatedPerson(RelatedPerson relatedPerson);
+
+	boolean insertFineAppeal(FineAppend fineAppend);
 	
 //	List<Vehide> relatedPersonVihide(Integer id);
 
