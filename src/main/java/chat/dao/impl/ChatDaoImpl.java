@@ -50,8 +50,8 @@ public class ChatDaoImpl implements ChatDao {
 	@Override
 	public List<Chat> selectChatByChatRoom(Integer ChatRoomId) {
 		final String sql = "select c.*, r.memid1, r.memid2, \r\n"
-				+ "    case when r.memid1 <> c.senderid then m1.nickname else m2.nickname end as nickname,\r\n"
-				+ "    case when r.memid1 <> c.senderid then m1.avatar else m2.avatar end as avatar\r\n"
+				+ "    case when r.memid1 = c.senderid then m1.nickname else m2.nickname end as nickname,\r\n"
+				+ "    case when r.memid1 = c.senderid then m1.avatar else m2.avatar end as avatar\r\n"
 				+ "from chat c\r\n" + "left join chatroom r on r.id = c.chatroomid\r\n"
 				+ "left join member m1 on m1.id = r.memid1\r\n" + "left join member m2 on m2.id = r.memid2\r\n"
 				+ "where r.id = ?\r\n" + "order by SendTime;";
