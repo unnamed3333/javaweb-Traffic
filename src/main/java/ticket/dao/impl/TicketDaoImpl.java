@@ -96,15 +96,15 @@ public class TicketDaoImpl implements TicketDao {
 
 	@Override
 	public List<byte[]> selectAllAppendix(String ticketNo) {
-		final String sql = "select * from Appendix where ticketNo = ?";
+		final String sql = "select * from Appendix where TicketNo = ?";
 		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setString(1, ticketNo);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				List<byte[]> result = new ArrayList<>();
-				if (rs.next()) {
+				while (rs.next()) {
 					result.add(rs.getBytes("appendix"));
-					return result;
 				}
+				return result;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

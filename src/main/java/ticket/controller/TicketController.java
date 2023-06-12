@@ -23,42 +23,4 @@ public class TicketController {
 	private static final Gson GSON = new GsonBuilder().setDateFormat("yyyy/MM/dd HH:mm:ss").create();
 	private static final TicketService SERVICE = new TicketServiceImpl();
 
-//	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//		String pathInfo = request.getPathInfo();
-//		pathInfo = pathInfo.substring(1);
-//		String[] pathVariables = pathInfo.split("/");
-//
-//		if (pathVariables.length == 1) {
-//			Integer id = Integer.parseInt(pathVariables[0]);
-//			List<Ticket> list = SERVICE.findTicketByMemIdHistory(Integer.valueOf(id));
-//			list.forEach(Ticket -> {
-//				for (int i = 0; i < Ticket.getAppendix().size(); i++) {
-//					String appendixBase64 = Base64.getEncoder().encodeToString(Ticket.getAppendix().get(i));
-//					Appendix appendix = new Appendix();
-//					appendix.setAppendixBase64(appendixBase64);
-//					appendix.setAppendix(null);
-//				}
-//
-//			});
-//			response.getWriter().write(GSON.toJson(list));
-//
-//		} else {
-//			Integer id = Integer.parseInt(pathVariables[0]);
-//			Integer status = Integer.parseInt(pathVariables[1]);
-//			List<Ticket> list = SERVICE.findTicketByMemId(Integer.valueOf(id), Integer.valueOf(status)); // 把從前端取得的member傳進service
-//
-//			list.forEach(Ticket -> {
-//				for (int i = 0; i < Ticket.getAppendix().size(); i++) {
-//					String appendixBase64 = Base64.getEncoder().encodeToString(Ticket.getAppendix().get(i));
-//					Appendix appendix = new Appendix();
-//					appendix.setAppendixBase64(appendixBase64);
-//					appendix.setAppendix(null);
-//				}
-//
-//			});
-//			response.getWriter().write(GSON.toJson(list));
-//		}
-//
-//	}
-
 }
