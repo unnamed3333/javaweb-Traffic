@@ -52,6 +52,7 @@ public class ForumDaoImpl implements ForumDao{
 					forumArticle.setMemberID(rs.getInt("MemID"));
 					forumArticle.setContent(rs.getString("Content"));
 					forumArticle.setTitle(rs.getString("Title"));
+					forumArticle.setCreateTime(rs.getTimestamp("createtime"));
 					forumArticlesList.add(forumArticle);
 				}
 				return forumArticlesList;

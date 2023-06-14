@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import core.bean.ForumArticle;
@@ -25,6 +27,8 @@ import core.bean.RelatedPerson;
 @WebServlet("/ForumArticle/*")
 public class ForumController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final Gson GSON = new GsonBuilder().setDateFormat("yyyy/MM/dd HH:mm:ss").create();
+//	private static final TicketService SERVICE = new TicketServiceImpl();
 
 	//新增文章
 	@Override
