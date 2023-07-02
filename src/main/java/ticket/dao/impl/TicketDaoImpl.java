@@ -15,14 +15,16 @@ public class TicketDaoImpl implements TicketDao {
 
 	@Override
 	public List<Ticket> selectByMemId(Integer memId, Integer status) {
-		final String sql = "select t.* from ticket t \r\n" + "left join Vehicle v on t.VehicleNo = v.VehicleNo\r\n"
+		final String sql = "select t.* from ticket t\r\n"
+				+ "left join Vehicle v on t.VehicleNo = v.VehicleNo\r\n"
+				+ "left join member m on  m.ID = v.MemID\r\n"
 				+ "left join relatedperson r on  r.ID = v.RelatedPersonID\r\n"
-				+ "where (v.RelatedPersonID is not null or t.MemID is not null)\r\n"
-				+ "and (t.MemID = ? or r.MemID = ?) and (t.Status = ?);";
+				+ "where (r.MemID = ? or r.MemID = ? or v.MemID = ? or r.Name = t.Driver) and (t.Status = ?)";
 		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, memId);
 			pstmt.setInt(2, memId);
-			pstmt.setInt(3, status);
+			pstmt.setInt(3, memId);
+			pstmt.setInt(4, status);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				List<Ticket> list = new ArrayList<>();
 				while (rs.next()) {
@@ -56,13 +58,15 @@ public class TicketDaoImpl implements TicketDao {
 
 	@Override
 	public List<Ticket> selectByMemIdHistory(Integer memId) {
-		final String sql = "select t.* from ticket t \r\n" + "left join Vehicle v on t.VehicleNo = v.VehicleNo\r\n"
+		final String sql = "select t.* from ticket t\r\n"
+				+ "left join Vehicle v on t.VehicleNo = v.VehicleNo\r\n"
+				+ "left join member m on  m.ID = v.MemID\r\n"
 				+ "left join relatedperson r on  r.ID = v.RelatedPersonID\r\n"
-				+ "where (v.RelatedPersonID is not null or t.MemID is not null)\r\n"
-				+ "and (t.MemID = ? or r.MemID = ?) and (t.Status = 1 or t.Status = 3);";
+				+ "where (r.MemID = ? or r.MemID = ? or v.MemID = ? or r.Name = t.Driver) and (t.Status = 1 or t.Status = 3);";
 		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, memId);
 			pstmt.setInt(2, memId);
+			pstmt.setInt(3, memId);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				List<Ticket> list = new ArrayList<>();
 				while (rs.next()) {

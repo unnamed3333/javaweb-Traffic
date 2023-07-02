@@ -8,6 +8,7 @@ public class ChatRoom {
     private String nickname; // 另外一個使用者的暱稱
     private byte[] avatar; // 另外一個使用者的頭貼
     private String avatarBase64;
+    private Integer unread; 
     
 	public Integer getID() {
 		return ID;
@@ -45,5 +46,11 @@ public class ChatRoom {
 	public void setAvatarBase64(String avatarBase64) {
 		this.avatarBase64 = avatarBase64;
 	}
-
+	public Integer getUnread() {
+		return unread;
+	}
+	public void setUnread(Integer unread) {
+		this.unread = unread;
+	}
+	
 }

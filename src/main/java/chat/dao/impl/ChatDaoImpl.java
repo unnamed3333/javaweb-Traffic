@@ -17,16 +17,22 @@ public class ChatDaoImpl implements ChatDao {
 	// 聊天室的recycleview資料
 	@Override
 	public List<ChatRoom> selectChatRoomByMemId(Integer memId) {
-		final String sql = "select r.*,\r\n"
+		final String sql = "select r.*, \r\n"
 				+ "    case when r.MemID1 != ? then m1.nickname else m2.Nickname end as Nickname,\r\n"
-				+ "    case when r.MemID1 != ? then m1.avatar else m2.Avatar end as Avatar\r\n" + "from chatroom r\r\n"
-				+ "left join member m1 on m1.id = r.MemID1\r\n" + "left join member m2 on m2.id = r.MemID2\r\n"
-				+ "where (r.MemID1 = ? or r.MemID2 = ?)";
+				+ "    case when r.MemID1 != ? then m1.avatar else m2.Avatar end as Avatar,\r\n"
+				+ "    sum(case when c.ReadStatus = 0 then 1 else 0 end) as unread\r\n"
+				+ "from chatroom r\r\n"
+				+ "left join member m1 on m1.id = r.MemID1\r\n"
+				+ "left join member m2 on m2.id = r.MemID2\r\n"
+				+ "left join chat c on c.chatroomID = r.ID and c.SenderID != ?\r\n"
+				+ "where (r.MemID1 = ? or r.MemID2 = ?)\r\n"
+				+ "group by r.ID";
 		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, memId);
 			pstmt.setInt(2, memId);
 			pstmt.setInt(3, memId);
 			pstmt.setInt(4, memId);
+			pstmt.setInt(5, memId);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				List<ChatRoom> list = new ArrayList<>();
 				while (rs.next()) {
@@ -36,6 +42,7 @@ public class ChatDaoImpl implements ChatDao {
 					chatroom.setMemID2(rs.getInt("memID2"));
 					chatroom.setNickname(rs.getString("nickname"));
 					chatroom.setAvatar(rs.getBytes("avatar"));
+					chatroom.setUnread(rs.getInt("unread"));
 					list.add(chatroom);
 				}
 				return list;
